@@ -2,7 +2,7 @@
 This script computes the average Time to Fix (TTF) for each resolution strategy and structural configuration based on the TTF results from the TTF_RESULTS file.
 
 The following rules are applied when computing the average TTF:
-1. Scenarios with TTF = NA (corresponding to PF9 - No Fix scenarios) will be excluded from the average TTF computation.
+1. Scenarios with TTF = NA (corresponding to RS7 - No Fix scenarios) will be excluded from the average TTF computation.
 2. The average TTF will be computed in days and rounded to the nearest day.
 3. Since there are negative TTF values in the TTF_RESULTS file, the absolute value of the TTF is used instead of the raw TTF value when computing the average, as we are interested in the magnitude of the TTF rather than its direction (positive or negative).
 """
@@ -10,13 +10,13 @@ The following rules are applied when computing the average TTF:
 import csv
 from collections import defaultdict
 
-TTF_RESULTS = 'issue_ttf.csv'
+TTF_RESULTS = 'data/scenarios_dataset/issue_ttf.csv'
 """
 Headers:
 Scenario,FixStrategy,StructuralConfig,TTF
 """
 
-TTF_AVERAGES = 'ttf_averages.csv'
+TTF_AVERAGES = 'data/scenarios_dataset/ttf_averages.csv'
 """
 Headers:
 FixStrategy,StructuralConfig,AverageTTF
