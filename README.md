@@ -4,6 +4,15 @@ ICSME 2026
 ## Overview
 
 This repository contains the data and analysis scripts for studying Cross-Project Correlated Bugs (CPCBs) in the Python ecosystem. The research focuses on characterizing how bugs are resolved across multiple projects, particularly analyzing the relationship between upstream libraries and downstream dependents.
+        
+The study identifies seven resolution strategies for CPCBs:
+- **RS1**: Wait-for-Upstream Fix
+- **RS2**: Downstream Fix
+- **RS3**: Coordinated Fix
+- **RS4**: Temporary Fix
+- **RS5**: Upstream Patch Adoption
+- **RS6**: Replacement Fix
+- **RS7**: No Fix
 
 ## Repository Structure
 
@@ -11,7 +20,7 @@ This repository contains the data and analysis scripts for studying Cross-Projec
 
 #### `data/source_dataset/`
 Contains the primary CPCB dataset files:
-- `cpcb_dataset.csv` - The complete CPCB dataset borrowed from Ma et al. (2017)
+- `cpcb_dataset.csv` - The complete CPCB dataset borrowed from Ma et al. (2017) [1]
 - `cpcb_filtered_pairs.csv` - Filtered pairs of CPCBs used in our study
 
 #### `data/scenarios/`
@@ -33,7 +42,7 @@ Contains artifacts from the qualitative analysis phase:
 ### Scripts
 
 #### `scripts/get_dates.py`
-Enriches issue data with temporal information from the GitHub API. Reads from `issue_summary.csv` and outputs `issue_dates.csv` with added date fields (State, OpenDate, CloseDate, MergeDate).
+Enriches issue data with temporal information from the GitHub API. Reads from `issue_summary.csv` and outputs `issue_dates.csv` with added date fields (State, OpenDate, CloseDate, MergeDate). All dates in the dataset follow ISO 8601 format (`YYYY-MM-DDTHH:MM:SSZ`).     
 
 **Requirements:** GitHub Personal Access Token (PAT) stored in a `.env` file as `PAC=your_token`
 
@@ -48,9 +57,11 @@ TTF computation varies by resolution strategy:
 - **RS2 (Downstream Fix), RS4 (Temporary Fix), RS5 (Upstream Patch Adoption), RS6 (Replacement Fix)**: TTF = Downstream merge date - Downstream issue open date
 - **RS3 (Coordinated Fix)**: TTF = max(Downstream merge date, Upstream merge date) - Downstream issue open date
 - **RS7 (No Fix)**: TTF = NA
+        
+TTF values are computed in seconds and can be converted to days for analysis.      
 
 #### `scripts/ttf_averages.py`
-Computes average TTF grouped by resolution strategy and structural configuration. Uses absolute values of TTF to focus on magnitude rather than direction. Excludes NA values (RS7 scenarios).
+Computes average TTF (in days) grouped by resolution strategy and structural configuration. Uses absolute values of TTF to focus on magnitude rather than direction. Excludes NA values (RS7 scenarios).
 
 
 
@@ -65,18 +76,6 @@ Computes average TTF grouped by resolution strategy and structural configuration
    ```
    PAC=your_github_personal_access_token
    ```
+## References     
+1. Ma, W., Chen, L., Zhang, X., Zhou, Y., & Xu, B. (2017, May). How do developers fix cross-project correlated bugs? a case study on the github scientific python ecosystem. In 2017 IEEE/ACM 39th International Conference on Software Engineering (ICSE) (pp. 381-392). IEEE.       
 
-## Resolution Strategies
-
-The study identifies seven resolution strategies for CPCBs:
-- **RS1**: Wait-for-Upstream Fix
-- **RS2**: Downstream Fix
-- **RS3**: Coordinated Fix
-- **RS4**: Temporary Fix
-- **RS5**: Upstream Patch Adoption
-- **RS6**: Replacement Fix
-- **RS7**: No Fix
-
-## Data Format
-
-All dates in the dataset follow ISO 8601 format (`YYYY-MM-DDTHH:MM:SSZ`). TTF values are computed in seconds and can be converted to days for analysis.
